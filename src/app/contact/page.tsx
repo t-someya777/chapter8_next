@@ -15,11 +15,11 @@ export default function Contact() {
     resolver: zodResolver(FormSchema)
   })
 
-  const onReset = () => {
+  const handleReset = () => {
     reset()
   }
 
-  const onSubmit = async (data: TFormSchema) => {
+  const handleSubmitForm = async (data: TFormSchema) => {
     try {
       const response = await fetch('https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts', {
         method: 'POST',
@@ -42,7 +42,7 @@ export default function Contact() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>問合わせフォーム</h1>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(handleSubmitForm)}>
         <div className={styles.formItem}>
           <label htmlFor='name' className={styles.label}>お名前</label>
           <div>
@@ -80,7 +80,7 @@ export default function Contact() {
         </div>
         <div className={styles.buttonGroup}>
           <button type='submit' className={styles.button} disabled={isSubmitting}>送信</button>
-          <button type='button' className={styles.button} onClick={onReset} disabled={isSubmitting}>クリア</button>
+          <button type='button' className={styles.button} onClick={handleReset} disabled={isSubmitting}>クリア</button>
         </div>
       </form>
     </div>
