@@ -1,9 +1,9 @@
 'use client';
 
 import styles from './page.module.scss'
-import useFetchData   from "@/hooks/useFetchData";
+import useFetchData   from "@/app/_hooks/useFetchData";
 import Link from "next/link";
-import { formatDate } from "@/functions/handleDate";
+import { formatDate } from "@/app/_functions/handleDate";
 
 type DataProps = {
   id: number;

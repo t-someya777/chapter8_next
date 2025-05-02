@@ -2,7 +2,7 @@
 
 import styles from './page.module.scss'
 import { useForm } from "react-hook-form"
-import { FormSchema , TFormSchema } from '@/schema/FormSchema'
+import { FormSchema , TFormSchema } from '@/app/_schema/formSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 export default function Contact() {
