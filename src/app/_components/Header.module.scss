@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  padding: 0 2rem;
+  background-color: #333;
+  
+  .headerItem {
+
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+}
