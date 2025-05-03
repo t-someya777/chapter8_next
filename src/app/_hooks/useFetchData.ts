@@ -3,15 +3,22 @@
 import { useState, useEffect } from "react";
 
 type DataProps = {
-  id:number
-  title:string
-  createdAt:string
-  thumbnailUrl:string
-  categories:string[]
-  content:string
+  categories: { id: string; name: string }[],
+  content: string,
+  createdAt: string,
+  id: string,
+  publishedAt: string,
+  revisedAt: string,
+  thumbnail: {
+    url: string,
+    height: number,
+    width: number,
+  },
+  title: string,
+  updatedAt: string
 }
 
-export default function useFetchData<T = DataProps | DataProps[]> (url:string,page:string = 'posts') {
+export default function useFetchData<T = DataProps | DataProps[]> (url:string, page:string = 'posts') {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -21,7 +28,11 @@ export default function useFetchData<T = DataProps | DataProps[]> (url:string,pa
 
   const fetchData = async () => {
     try {
-      const response = await fetch(url)
+      const response = await fetch(url, {
+        headers: {
+          'X-MICROCMS-API-KEY': process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string,
+        }
+      })
       if (!response.ok) {
         throw new Error('データを取得できません。')
       }
@@ -29,7 +40,7 @@ export default function useFetchData<T = DataProps | DataProps[]> (url:string,pa
 
       setLoading(false)
       
-      const resultData = page === 'posts' ? result.posts : result.post
+      const resultData = page === 'posts' ? result.contents : result
       setData(resultData)
 
     }catch (error) {

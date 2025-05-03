@@ -9,6 +9,10 @@ const nextConfig = {
         pathname: '/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.microcms-assets.io',
+      },
     ],
   },};
 
