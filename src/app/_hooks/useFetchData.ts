@@ -1,24 +1,10 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import { MicroCmsPost } from "../_types";
 
-type DataProps = {
-  categories: { id: string; name: string }[],
-  content: string,
-  createdAt: string,
-  id: string,
-  publishedAt: string,
-  revisedAt: string,
-  thumbnail: {
-    url: string,
-    height: number,
-    width: number,
-  },
-  title: string,
-  updatedAt: string
-}
 
-export default function useFetchData<T = DataProps | DataProps[]> (url:string, page:string = 'posts') {
+export default function useFetchData<T = MicroCmsPost | MicroCmsPost[]> (url:string, page:string = 'posts') {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 

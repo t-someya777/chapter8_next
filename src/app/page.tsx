@@ -4,26 +4,12 @@ import styles from './page.module.scss'
 import useFetchData   from "@/app/_hooks/useFetchData";
 import Link from "next/link";
 import { formatDate } from "@/app/_functions/handleDate";
+import { MicroCmsPost } from './_types';
 
-type DataProps = {
-  categories: { id: string; name: string }[],
-  content: string,
-  createdAt: string,
-  id: string,
-  publishedAt: string,
-  revisedAt: string,
-  thumbnail: {
-    url: string,
-    height: number,
-    width: number,
-  },
-  title: string,
-  updatedAt: string
-}
 
 export default function Home() {
   const url = "https://1ly0plhsy2.microcms.io/api/v1/posts";
-  const {data:posts, loading}:{data:DataProps[] | null, loading:boolean}= useFetchData(url);
+  const {data:posts, loading}:{data:MicroCmsPost[] | null, loading:boolean}= useFetchData(url);
 
 
   if(loading) return <div>読み込み中</div>
