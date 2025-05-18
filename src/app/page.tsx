@@ -3,13 +3,12 @@
 import styles from './page.module.scss'
 import useFetchData   from "@/app/_hooks/useFetchData";
 import Link from "next/link";
-import { formatDate } from "@/app/_functions/handleDate";
-import { MicroCmsPost } from './_types';
-
+import { formatDate, time } from "@/app/_functions/handleDate";
+import { PostWithCategory } from './_types';
 
 export default function Home() {
-  const url = "https://1ly0plhsy2.microcms.io/api/v1/posts";
-  const {data:posts, loading}:{data:MicroCmsPost[] | null, loading:boolean}= useFetchData(url);
+  const url = "/api/posts/";
+  const {data:posts, loading}:{data:PostWithCategory[] | null, loading:boolean}= useFetchData(url);
 
 
   if(loading) return <div>読み込み中</div>
@@ -21,11 +20,11 @@ export default function Home() {
         {posts.map(post => (
           <Link key={post.id} href={`/posts/${post.id}`}  className={styles.link}>
             <div className={styles.flex}>
-              <time dateTime={post.createdAt.split('T')[0]} className="">
+              <time dateTime={time(post.createdAt)} >
                 {formatDate(post.createdAt)}
               </time>
               <p>
-                {post.categories.map(category => <span key={category.name} className="">{category.name}</span>)}
+                {post.postCategories.map((category,index) => <span key={index} className="">{category.category.name}</span>)}
               </p>
             </div>
             <h2 className={styles.title}>{post.title}</h2>

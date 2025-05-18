@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { MicroCmsPost } from "../_types";
+import { PostWithCategory } from "../_types";
 
-
-export default function useFetchData<T = MicroCmsPost | MicroCmsPost[]> (url:string, page:string = 'posts') {
+export default function useFetchData<T = PostWithCategory | PostWithCategory[]> (url:string) {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -14,20 +13,15 @@ export default function useFetchData<T = MicroCmsPost | MicroCmsPost[]> (url:str
 
   const fetchData = async () => {
     try {
-      const response = await fetch(url, {
-        headers: {
-          'X-MICROCMS-API-KEY': process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string,
-        }
-      })
+      const response = await fetch(url)
       if (!response.ok) {
         throw new Error('データを取得できません。')
       }
       const result = await response.json()
 
       setLoading(false)
-      
-      const resultData = page === 'posts' ? result.contents : result
-      setData(resultData)
+      setData(result)
+      console.log(result)
 
     }catch (error) {
       console.error('Error fetching data:', error)

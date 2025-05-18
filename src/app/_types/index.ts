@@ -1,13 +1,9 @@
+import { Post, PostCategory, Category } from "@prisma/client";
 
-export type MicroCmsPost = {
-  id: string,
-  title: string,
-  content: string,
-  createdAt: string,
-  categories: { id: string; name: string }[],
-  thumbnail: {
-    url: string,
-    height: number,
-    width: number,
-  }
+export type PostWithCategory = Post &{
+  postCategories: PostCategoryInCategory[]
+}
+
+type PostCategoryInCategory = PostCategory & {
+  category: Category
 }
