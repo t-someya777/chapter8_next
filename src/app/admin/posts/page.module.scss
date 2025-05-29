@@ -1,0 +1,12 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    padding: 0.5rem;
+    color: #fff;
+    background-color: #39f;
+    border-radius: 0.2rem;
+  }
+}

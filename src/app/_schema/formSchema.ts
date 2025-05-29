@@ -7,3 +7,20 @@ export const FormSchema = z.object({
 });
 
 export type TFormSchema = z.infer<typeof FormSchema>;
+
+
+export const AdminPostsSchema = z.object({
+  title: z.string().min(1, {message: 'タイトルは必須です。'}),
+  content: z.string().min(1, {message: '内容は必須です。'}),
+  thumbnailUrl: z.string().url({message: 'URLを入力してください。'}),
+  category: z.string().min(1, {message: 'カテゴリは必須です。'}),
+})
+
+export type TAdminPostsSchema = z.infer<typeof AdminPostsSchema>
+
+
+export const AdminCategoriesSchema = z.object({
+  category: z.string().min(1, {message: 'カテゴリ名は必須です。'})
+})
+
+export type TAdminCategoriesSchema = z.infer<typeof AdminCategoriesSchema>

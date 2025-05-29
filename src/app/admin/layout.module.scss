@@ -1,0 +1,23 @@
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 100vh;
+}
+
+
+.main {
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      padding: 0.5rem;
+      color: #fff;
+      background-color: #39f;
+      border-radius: 0.2rem;
+    }
+  }
+}
