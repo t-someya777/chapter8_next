@@ -8,7 +8,7 @@ import { useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Button from "@/app/_components/Button"
 
-export default function NewCategory() {
+export default function UpdateCategory() {
   const params = useParams()
   const { id } = params
   const router = useRouter()
@@ -78,18 +78,17 @@ export default function NewCategory() {
       const response = await fetch(`/api/categories/${id}/`, {
         method: 'DELETE',
       })
-      console.log(response)
 
       if(!response.ok) {
         throw new Error('データを削除できませんでした。')
       }
 
       alert('カテゴリーを削除しました。\n一覧へ戻ります。')
-      router.push('/admin/categories')
+      router.push('/admin/categories/')
 
     }catch (error) {
       console.error(error)
-      alert('送信に失敗しました。')
+      alert('削除に失敗しました。')
     }
   }
 

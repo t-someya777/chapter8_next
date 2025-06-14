@@ -13,7 +13,7 @@ export const AdminPostsSchema = z.object({
   title: z.string().min(1, {message: 'タイトルは必須です。'}),
   content: z.string().min(1, {message: '内容は必須です。'}),
   thumbnailUrl: z.string().url({message: 'URLを入力してください。'}),
-  category: z.string().min(1, {message: 'カテゴリは必須です。'}),
+  category: z.array(z.string()).min(1, {message: 'カテゴリーを1つ以上選択してください。'}),
 })
 
 export type TAdminPostsSchema = z.infer<typeof AdminPostsSchema>

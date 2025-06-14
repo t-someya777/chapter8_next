@@ -5,6 +5,11 @@
     margin-block-start: 1rem;
   }
 
+  .formItem:last-child {
+    display: flex;
+    gap: 1rem;
+  }
+
   label {
     display: block;
   }
@@ -35,4 +40,10 @@
     color: red;
     font-size: 0.8rem;
   }
+
+}
+
+.buttonWrapper {
+  display: flex;
+  gap: 0.5rem;
 }

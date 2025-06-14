@@ -4,18 +4,53 @@ import styles from "./page.module.scss"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminPostsSchema, TAdminPostsSchema } from "@/app/_schema/formSchema"
+import Button from "@/app/_components/Button"
+import React, { useEffect, useState } from "react"
+import { Category } from "@prisma/client"
+import { useRouter } from "next/navigation"
+
 
 export default function NewPost() {
+  const [categories, setCategories] = useState<Category[]>()
+  const router = useRouter()
+
+  useEffect(() => {
+    fetchCategory()
+  },[])
+
+  const fetchCategory = async () => {
+    try {
+
+      const response = await fetch(`/api/posts/new/`)
+      if(!response.ok) {
+        throw new Error('データを取得できませんでした。')
+      }
+      const data = await response.json()
+      setCategories(data)
+
+    }catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
 
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<TAdminPostsSchema>({
-    resolver: zodResolver(AdminPostsSchema)
+    resolver: zodResolver(AdminPostsSchema),
+    defaultValues: {
+      title:'',
+      content:'',
+      thumbnailUrl:'https://placehold.jp/800x400.png',
+      category:[]
+    }
   })
 
   const onSubmit = async (data: TAdminPostsSchema) => {
+
     try {
       const response = await fetch('/api/posts/new', {
         method: 'POST',
@@ -28,9 +63,13 @@ export default function NewPost() {
       if(!response.ok) {
         throw new Error('データを送信できませんでした。')
       }
+
+      alert('記事を作成しました。\n一覧ページに戻ります。')
+      router.push('/admin/posts')
       
     } catch (error) {
       console.error("Error creating post:", error)
+      alert('送信に失敗しました。')
     }
   }
 
@@ -68,19 +107,31 @@ export default function NewPost() {
             {errors.thumbnailUrl && <div className={styles.error}>{errors.thumbnailUrl.message}</div>}
         </div>
         <div className={styles.formItem}>
-          <label htmlFor="category">カテゴリ</label>
-          <select
-            id="category"
-            {...register('category')}>
-              <option value="">バリューなし</option>
-              <option value="hokkaido">北海道</option>
-          </select>
+          <p>カテゴリ</p>
+          <div className={styles.checkboxContainer}>    
+            {categories?.map(category => (
+              <label key={category.id}>
+                <input
+                  value={category.id}
+                  id={category.id.toString()}
+                  type="checkbox"
+                  {...register('category')}
+                  />
+                {category.name}
+              </label>
+            ))}
+          </div>
           {errors.category && <div className={styles.error}>{errors.category.message}</div>}
         </div>
         <div className={styles.formItem}>
-          <button>作成</button>
+          <Button 
+            name='create'
+            text='作成'
+          />          
         </div>
       </form>
+
+      
     </>
   )
 }
