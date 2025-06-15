@@ -7,7 +7,7 @@ import { Category } from "@prisma/client"
 
 export default function AdminCategories() {
 
-  const url = '/api/categories/'
+  const url = '/api/admin/categories/'
   const { data: categories, loading }:{data:Category[] | null, loading:boolean} = useFetchData(url)
 
   if(loading) return <div>読み込み中</div>

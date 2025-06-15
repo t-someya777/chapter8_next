@@ -43,28 +43,23 @@ export default function UpdatePost() {
   const fetchData = async () => {
     try {
 
-      const response = await fetch(`/api/posts/${id}/`)
+      const response = await fetch(`/api/admin/posts/${id}/`)
       if(!response.ok) {
         throw new Error('データを取得できませんでした。')
       }
-      const data:PostWithCategory = await response.json()
-      
-      const responseCategory = await fetch('/api/posts/new/')
-      if(!responseCategory.ok) {
-        throw new Error('カテゴリーを取得できませんでした。')
-      }
-      const categoryData = await responseCategory.json()
+      const {post, category }:{post: PostWithCategory, category:Category[]} = await response.json()
 
-      setPost(data)
-      setCategories(categoryData)
+      console.log(category)
+      setPost(post)
+      setCategories(category)
       setLoading(false)
 
       // 項目の初期表示設定
       reset({
-        title:data.title,
-        content: data.content,
-        thumbnailUrl: data.thumbnailUrl,
-        category: data.postCategories.map(pc => pc.category.id.toString())
+        title:post.title,
+        content: post.content,
+        thumbnailUrl: post.thumbnailUrl,
+        category: post.postCategories.map(pc => pc.category.id.toString())
       })
     }catch (error) {
       console.error(error)
@@ -75,7 +70,7 @@ export default function UpdatePost() {
   const onSubmit = async(data:TAdminPostsSchema) => {
 
     try {
-      await fetch(`/api/posts/${id}`, {
+      await fetch(`/api/admin/posts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -96,7 +91,7 @@ export default function UpdatePost() {
   // 記事データ削除
   const handleDelete = async() => {
     try {
-      const response = await fetch(`/api/posts/${id}`, {
+      const response = await fetch(`/api/admin/posts/${id}`, {
         method: 'DELETE',
       })
 

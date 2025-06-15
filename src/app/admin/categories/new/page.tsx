@@ -21,7 +21,7 @@ export default function NewCategory() {
   const onSubmit = async (data: TAdminCategoriesSchema) => {
     try {
 
-      const response = await fetch('/api/categories/new/', {
+      const response = await fetch('/api/admin/categories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,12 +33,14 @@ export default function NewCategory() {
         throw new Error('データを送信できませんでした。')
       }
 
-      alert('作成しました。\n一覧ページに戻ります。')
-      router.push('/admin/categories')
 
+      alert('作成しました。\n一覧ページに戻ります。')
+      
     }catch (error) {
       console.error(error)
       alert('送信に失敗しました。')
+    }finally {
+      router.push('/admin/categories')
     }
   }
 

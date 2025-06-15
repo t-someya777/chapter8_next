@@ -21,7 +21,7 @@ export default function NewPost() {
   const fetchCategory = async () => {
     try {
 
-      const response = await fetch(`/api/posts/new/`)
+      const response = await fetch(`/api/admin/categories`)
       if(!response.ok) {
         throw new Error('データを取得できませんでした。')
       }
@@ -52,7 +52,7 @@ export default function NewPost() {
   const onSubmit = async (data: TAdminPostsSchema) => {
 
     try {
-      const response = await fetch('/api/posts/new', {
+      const response = await fetch('/api/admin/posts/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -17,10 +17,10 @@ export default function UpdateCategory() {
     fetchCategory()
   },[])
 
+  // データ取得
   const fetchCategory = async () => {
     try {
-
-      const response = await fetch(`/api/categories/${id}/`)
+      const response = await fetch(`/api/admin/categories/${id}/`)
       if(!response.ok) {
         throw new Error('データを取得できませんでした。')
       }
@@ -46,11 +46,11 @@ export default function UpdateCategory() {
   })
 
 
+  // データ送信
   const onSubmit = async (data:TAdminCategoriesSchema) => {
 
     try {
-
-      const response = await fetch(`/api/categories/${id}/`, {
+      const response = await fetch(`/api/admin/categories/${id}/`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -59,23 +59,23 @@ export default function UpdateCategory() {
       })
 
       if(!response.ok) {
-        throw new Error('データを送信できませんでした。')
+        throw new Error('データを更新できませんでした。')
       }
 
       alert('カテゴリーを更新しました。\n一覧ページに戻ります。')
-      router.push('/admin/categories')
-
+      
     }catch (error) {
       console.error(error)
-      alert('送信に失敗しました。')
+      alert('更新に失敗しました。')
+    }finally {
+      router.push('/admin/categories')
     }
   }
 
+  // データ削除
   const handleDelete = async ()=> {
-
     try {
-
-      const response = await fetch(`/api/categories/${id}/`, {
+      const response = await fetch(`/api/admin/categories/${id}/`, {
         method: 'DELETE',
       })
 
@@ -84,11 +84,12 @@ export default function UpdateCategory() {
       }
 
       alert('カテゴリーを削除しました。\n一覧へ戻ります。')
-      router.push('/admin/categories/')
-
+      
     }catch (error) {
       console.error(error)
       alert('削除に失敗しました。')
+    }finally {
+      router.push('/admin/categories/')
     }
   }
 

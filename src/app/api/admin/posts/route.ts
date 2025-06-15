@@ -1,32 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient
+const prisma = new PrismaClient()
 
 export async function GET() {
-  const getCategory = await prisma.category.findMany()
-
-  return NextResponse.json(getCategory)
+  const postsGet = await prisma.post.findMany({
+    select: {
+      id: true,
+      title: true,
+      createdAt: true,
+    }
+  })
+  return NextResponse.json(postsGet)
 }
 
 export async function POST(request:NextRequest) {
   const post = await request.json()
-  console.log(post)
 
-  const updatePosts = await prisma.post.create({
+  const postPost = await prisma.post.create({
     data: {
       title:post.title,
       content:post.content,
-      thumbnailUrl: post.thumbnailUrl,
+      thumbnailUrl:post.thumbnailUrl,
       postCategories: {
         create: post.category.map((categoryId:number) => ({
           category: {
-            connect: {id:Number(categoryId)}
+            connect: {id: categoryId}
           }
         }))
       }
     }
   })
 
-  return NextResponse.json(updatePosts)
+  return NextResponse.json(postPost)
 }
