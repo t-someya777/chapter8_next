@@ -5,34 +5,16 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminPostsSchema, TAdminPostsSchema } from "@/app/_schema/formSchema"
 import Button from "@/app/_components/Button"
-import React, { useEffect, useState } from "react"
 import { Category } from "@prisma/client"
 import { useRouter } from "next/navigation"
+import useFetchData from "@/app/_hooks/useFetchData"
 
 
 export default function NewPost() {
-  const [categories, setCategories] = useState<Category[]>()
   const router = useRouter()
 
-  useEffect(() => {
-    fetchCategory()
-  },[])
-
-  const fetchCategory = async () => {
-    try {
-
-      const response = await fetch(`/api/admin/categories`)
-      if(!response.ok) {
-        throw new Error('データを取得できませんでした。')
-      }
-      const data = await response.json()
-      setCategories(data)
-
-    }catch (error) {
-      console.error(error)
-      return null
-    }
-  }
+  const url = `/api/admin/categories`
+  const {data: categories, loading}: {data: Category[] | null, loading:boolean} = useFetchData(url)
 
 
   const {
@@ -72,6 +54,8 @@ export default function NewPost() {
       alert('送信に失敗しました。')
     }
   }
+
+  if(loading) return <div>読み込み中</div>
 
   return (
     <>

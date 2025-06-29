@@ -7,34 +7,16 @@ import styles from "./page.module.scss"
 import { useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Button from "@/app/_components/Button"
+import useFetchData from "@/app/_hooks/useFetchData"
+import { Category } from "@prisma/client"
 
 export default function UpdateCategory() {
   const params = useParams()
   const { id } = params
   const router = useRouter()
 
-  useEffect(() => {
-    fetchCategory()
-  },[])
-
-  // データ取得
-  const fetchCategory = async () => {
-    try {
-      const response = await fetch(`/api/admin/categories/${id}/`)
-      if(!response.ok) {
-        throw new Error('データを取得できませんでした。')
-      }
-      const data = await response.json()
-
-      reset({
-        category: data.name
-      })
-
-    }catch (error) {
-      console.error(error)
-    }
-  }
-  
+  const url = `/api/admin/categories/${id}/`
+  const {data, loading } = useFetchData<Category>(url)
 
   const {
     register,
@@ -45,6 +27,14 @@ export default function UpdateCategory() {
     resolver: zodResolver(AdminCategoriesSchema)
   })
 
+
+  useEffect(() => {
+    if(!data) return
+
+    reset ({
+      category: data.name
+    })
+  },[data, reset])
 
   // データ送信
   const onSubmit = async (data:TAdminCategoriesSchema) => {
@@ -94,6 +84,8 @@ export default function UpdateCategory() {
   }
 
 
+  if(loading) return <div>読み込み中</div>
+  if(!data) return <div>データがありません</div>
 
   return(
     <div>

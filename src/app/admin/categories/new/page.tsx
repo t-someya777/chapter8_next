@@ -35,6 +35,7 @@ export default function NewCategory() {
 
 
       alert('作成しました。\n一覧ページに戻ります。')
+      console.log(data)
       
     }catch (error) {
       console.error(error)

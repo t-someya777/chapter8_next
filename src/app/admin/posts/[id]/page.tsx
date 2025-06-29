@@ -3,20 +3,27 @@
 import Button from "@/app/_components/Button"
 import { useForm } from "react-hook-form"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import styles from './page.module.scss'
 import { AdminPostsSchema, TAdminPostsSchema  } from "@/app/_schema/formSchema"
 import { PostWithCategory } from "@/app/_types"
 import { Category } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
+import useFetchData from "@/app/_hooks/useFetchData"
+
+type DataProps = {
+  post: PostWithCategory
+  category:Category[]
+}
 
 export default function UpdatePost() {
-  const [loading, setLoading] = useState(true)
-  const [post, setPost] = useState<PostWithCategory | null>()
-  const [categories, setCategories] = useState<Category[] | null>()
   const params = useParams()
   const { id } = params
   const router = useRouter()
+
+  const url = `/api/admin/posts/${id}/`
+  const {data, loading} = useFetchData<DataProps>(url)
+  const {post , category} = data || {post: undefined, category: undefined}
 
     // バリデーション、データ制御
     const {
@@ -33,38 +40,18 @@ export default function UpdatePost() {
         category: []
       }
     })
-    
 
   useEffect(() => {
-    fetchData()
-  },[])
+    if(!data?.post) return
 
-  // データの取得
-  const fetchData = async () => {
-    try {
+    reset({
+      title:data.post.title,
+      content: data.post.content,
+      thumbnailUrl: data.post.thumbnailUrl,
+      category: data.post.postCategories.map(pc => pc.category.id.toString())
+    })
+  },[data,reset])
 
-      const response = await fetch(`/api/admin/posts/${id}/`)
-      if(!response.ok) {
-        throw new Error('データを取得できませんでした。')
-      }
-      const {post, category }:{post: PostWithCategory, category:Category[]} = await response.json()
-
-      console.log(category)
-      setPost(post)
-      setCategories(category)
-      setLoading(false)
-
-      // 項目の初期表示設定
-      reset({
-        title:post.title,
-        content: post.content,
-        thumbnailUrl: post.thumbnailUrl,
-        category: post.postCategories.map(pc => pc.category.id.toString())
-      })
-    }catch (error) {
-      console.error(error)
-    }
-  }
   
   // 記事データ更新
   const onSubmit = async(data:TAdminPostsSchema) => {
@@ -111,7 +98,7 @@ export default function UpdatePost() {
 
   if(loading) return <div>データ読み込み中</div>
   if(!post) return <div>データがありません。</div>
-  if(!categories) return <div>カテゴリーがありません。</div>
+  if(!category) return <div>カテゴリーがありません。</div>
 
   return (
     <div>
@@ -147,14 +134,14 @@ export default function UpdatePost() {
           <div className={styles.formItem}>
             <p>カテゴリ</p>
             <div className={styles.checkboxContainer}>
-              {categories.map(category => (
-                <label key={category.id}>
+              {category.map(cate => (
+                <label key={cate.id}>
                   <input
                     type="checkbox"
-                    value={category.id}
+                    value={cate.id}
                     {...register('category')}
                   />
-                  {category.name}
+                  {cate.name}
                 </label>
               ))}
             </div>

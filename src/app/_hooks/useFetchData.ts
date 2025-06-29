@@ -1,10 +1,8 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { PostWithCategory } from "../_types";
-import { Category } from "@prisma/client";
 
-export default function useFetchData<T = PostWithCategory | PostWithCategory[] | Category | Category[]> (url:string) {
+export default function useFetchData<T> (url:string) {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
