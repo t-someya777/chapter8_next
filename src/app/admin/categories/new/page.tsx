@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCategoriesSchema, TAdminCategoriesSchema } from "@/app/_schema/formSchema"
 import styles from "./page.module.scss"
 import { useRouter } from "next/navigation"
+import CategoryForm from "../_components/CategoryForm"
 
 export default function NewCategory() {
   const router = useRouter()
@@ -48,23 +49,20 @@ export default function NewCategory() {
   return(
     <div>
       <h1>カテゴリ作成</h1>
-      <form className={styles.form} action="" onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.formItem}>
-          <label htmlFor="category">カテゴリ名</label>
-          <input
-            type="text"
-            id="category"
-            {...register('category')}
-          />
-          {errors.category && <div className={styles.error}>{errors.category.message}</div>}
-        </div>
-        <div className={styles.formItem}>
-          <Button 
-            name='create'
-            text='作成'
-          />
-        </div>
-      </form>
+      <CategoryForm
+        handleSubmit={handleSubmit}
+        register={register}
+        onSubmit={onSubmit}
+        errors={errors}
+      />
+      <div className={styles.buttonWrapper}>
+        <Button 
+          name='create'
+          text='作成'
+          type="submit"
+          onClick={handleSubmit(onSubmit)}
+        />
+      </div>
     </div>
   )
 }

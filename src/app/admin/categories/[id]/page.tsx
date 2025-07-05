@@ -9,6 +9,7 @@ import { useParams, useRouter } from "next/navigation"
 import Button from "@/app/_components/Button"
 import useFetchData from "@/app/_hooks/useFetchData"
 import { Category } from "@prisma/client"
+import CategoryForm from "../_components/CategoryForm"
 
 export default function UpdateCategory() {
   const params = useParams()
@@ -90,19 +91,12 @@ export default function UpdateCategory() {
   return(
     <div>
       <h1>カテゴリ編集</h1>
-      <form className={styles.form} action="" onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.formItem}>
-          <label htmlFor="category">カテゴリ名</label>
-          <input
-            type="text"
-            id="category"
-            {...register('category')}
-          />
-          {errors.category && <div className={styles.error}>{errors.category.message}</div>}
-        </div>
-        <div className={styles.formItem}>
-        </div>
-      </form>
+      <CategoryForm 
+        register={register}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        errors={errors}
+      />
       <div className={styles.buttonWrapper}>
         <Button 
           name="update"
