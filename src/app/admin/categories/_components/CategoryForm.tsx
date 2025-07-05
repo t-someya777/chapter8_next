@@ -21,8 +21,6 @@ export default function CategoryForm({register, handleSubmit, onSubmit, errors}:
           />
         {errors.category && <div className={styles.error}>{errors.category.message as string}</div>}
       </div>
-      <div className={styles.formItem}>
-      </div>
     </form>
     )
 }
