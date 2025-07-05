@@ -23,9 +23,9 @@ export async function POST(request:NextRequest) {
       content:post.content,
       thumbnailUrl:post.thumbnailUrl,
       postCategories: {
-        create: post.category.map((categoryId:number) => ({
+        create: post.category.map((categoryId:string) => ({
           category: {
-            connect: {id: categoryId}
+            connect: {id: Number(categoryId)}
           }
         }))
       }

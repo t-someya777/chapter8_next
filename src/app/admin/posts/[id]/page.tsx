@@ -10,6 +10,7 @@ import { PostWithCategory } from "@/app/_types"
 import { Category } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import useFetchData from "@/app/_hooks/useFetchData"
+import PostForm from "../_components/PostForm"
 
 type DataProps = {
   post: PostWithCategory
@@ -103,63 +104,26 @@ export default function UpdatePost() {
   return (
     <div>
       <h1>記事編集</h1>
-      <form className={styles.form} action="" onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.formItem}>
-            <label htmlFor="title">タイトル</label>
-            <input 
-              type="text" 
-              id="title" 
-              {...register('title')}
-              />
-            {errors.title && <div className={styles.error}>{errors.title.message}</div>}
-          </div>
-          <div className={styles.formItem}>
-            <label htmlFor="content">内容</label>
-            <input 
-              type="text" 
-              id="content" 
-              {...register('content')}
-              />
-              {errors.content && <div className={styles.error}>{errors.content.message}</div>}
-          </div>
-          <div className={styles.formItem}>
-            <label htmlFor="thumbnailUrl">サムネイルURL</label>
-            <input 
-              type="url" 
-              id="thumbnailUrl" 
-              {...register('thumbnailUrl')}
-              />
-              {errors.thumbnailUrl && <div className={styles.error}>{errors.thumbnailUrl.message}</div>}
-          </div>
-          <div className={styles.formItem}>
-            <p>カテゴリ</p>
-            <div className={styles.checkboxContainer}>
-              {category.map(cate => (
-                <label key={cate.id}>
-                  <input
-                    type="checkbox"
-                    value={cate.id}
-                    {...register('category')}
-                  />
-                  {cate.name}
-                </label>
-              ))}
-            </div>
-            {errors.category && <div className={styles.error}>{errors.category.message}</div>}
-          </div>
-          <div className={styles.formItem}>
-            <Button 
-              name='update'
-              text='更新'
-            />
-            <Button
-              name='delete'
-              text='削除'
-              type='button'
-              onClick={handleDelete}
-            />
-          </div>
-      </form>
+      <PostForm 
+        register={register}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        errors={errors}
+        category={category}
+      />
+      <div className={styles.buttonWrapper}>
+        <Button 
+          name='update'
+          text='更新'
+          onClick={handleSubmit(onSubmit)}
+        />
+        <Button
+          name='delete'
+          text='削除'
+          type='button'
+          onClick={handleDelete}
+        />
+      </div>
     </div> 
   )
 }

@@ -1,9 +1,10 @@
 .form {
-  padding-block: 2rem 0;
+  padding-block: 2rem 1rem;
 
   .formItem:not(:first-child) {
     margin-block-start: 1rem;
   }
+
 
   label {
     display: block;
@@ -35,4 +36,5 @@
     color: red;
     font-size: 0.8rem;
   }
+
 }
