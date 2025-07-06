@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import Button from "@/app/_components/Button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCategoriesSchema, TAdminCategoriesSchema } from "@/app/_schema/formSchema"
-import styles from "./page.module.scss"
 import { useRouter } from "next/navigation"
 import CategoryForm from "../_components/CategoryForm"
 
@@ -54,14 +53,12 @@ export default function NewCategory() {
         errors={errors}
         isSubmitting={isSubmitting}
       />
-      <div className={styles.buttonWrapper}>
-        <Button 
-          name='create'
-          text='作成'
-          type="submit"
-          onClick={handleSubmit(onSubmit)}
-        />
-      </div>
+      <Button 
+        name='create'
+        text='作成'
+        type="submit"
+        onClick={handleSubmit(onSubmit)}
+      />
     </div>
   )
 }
