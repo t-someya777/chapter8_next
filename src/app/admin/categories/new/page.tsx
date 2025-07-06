@@ -14,14 +14,13 @@ export default function NewCategory() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors , isSubmitting}
   } = useForm<TAdminCategoriesSchema>({
     resolver: zodResolver(AdminCategoriesSchema)
   })
 
   const onSubmit = async (data: TAdminCategoriesSchema) => {
     try {
-
       const response = await fetch('/api/admin/categories', {
         method: 'POST',
         headers: {
@@ -34,7 +33,6 @@ export default function NewCategory() {
         throw new Error('データを送信できませんでした。')
       }
 
-
       alert('作成しました。\n一覧ページに戻ります。')
       console.log(data)
       
@@ -45,7 +43,7 @@ export default function NewCategory() {
       router.push('/admin/categories')
     }
   }
-
+  
   return(
     <div>
       <h1>カテゴリ作成</h1>
@@ -54,6 +52,7 @@ export default function NewCategory() {
         register={register}
         onSubmit={onSubmit}
         errors={errors}
+        isSubmitting={isSubmitting}
       />
       <div className={styles.buttonWrapper}>
         <Button 

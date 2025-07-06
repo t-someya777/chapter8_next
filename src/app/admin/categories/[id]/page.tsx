@@ -23,7 +23,7 @@ export default function UpdateCategory() {
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<TAdminCategoriesSchema>({
     resolver: zodResolver(AdminCategoriesSchema)
   })
@@ -96,6 +96,7 @@ export default function UpdateCategory() {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         errors={errors}
+        isSubmitting={isSubmitting}
       />
       <div className={styles.buttonWrapper}>
         <Button 

@@ -19,7 +19,7 @@ export default function NewPost() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting}
   } = useForm<TAdminPostsSchema>({
     resolver: zodResolver(AdminPostsSchema),
     defaultValues: {
@@ -68,6 +68,7 @@ export default function NewPost() {
         onSubmit={onSubmit}
         errors={errors}
         category={categories}
+        isSubmitting={isSubmitting}
       />
       <div>
         <Button 

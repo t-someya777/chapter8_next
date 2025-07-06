@@ -31,7 +31,7 @@ export default function UpdatePost() {
       register,
       handleSubmit,
       reset,
-      formState:{ errors }
+      formState:{ errors, isSubmitting }
     } = useForm<TAdminPostsSchema>({
       resolver:zodResolver(AdminPostsSchema),
       defaultValues: {
@@ -110,6 +110,7 @@ export default function UpdatePost() {
         onSubmit={onSubmit}
         errors={errors}
         category={category}
+        isSubmitting={isSubmitting}
       />
       <div className={styles.buttonWrapper}>
         <Button 

@@ -10,13 +10,15 @@ type PostFormProps = {
   onSubmit:(data: TAdminPostsSchema) => Promise<void>
   errors: FieldErrors<TAdminPostsSchema>
   category: Category[] | null
+  isSubmitting: boolean
 }
 
-export default function PostForm({ register, handleSubmit, onSubmit, errors, category}:PostFormProps){
+export default function PostForm({ register, handleSubmit, onSubmit, errors, category, isSubmitting}:PostFormProps){
 
   if(!category) {
     return <div>カテゴリーがありません</div>
   }
+  
   return (
     <form className={styles.form} action="" onSubmit={handleSubmit(onSubmit)}>
     <div className={styles.formItem}>
@@ -25,6 +27,7 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
         type="text" 
         id="title" 
         {...register('title')}
+        disabled={isSubmitting}
         />
       {errors.title && <div className={styles.error}>{errors.title.message}</div>}
     </div>
@@ -34,6 +37,7 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
         type="text" 
         id="content" 
         {...register('content')}
+        disabled={isSubmitting}
         />
         {errors.content && <div className={styles.error}>{errors.content.message}</div>}
     </div>
@@ -43,6 +47,7 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
         type="url" 
         id="thumbnailUrl" 
         {...register('thumbnailUrl')}
+        disabled={isSubmitting}
         />
         {errors.thumbnailUrl && <div className={styles.error}>{errors.thumbnailUrl.message}</div>}
     </div>
@@ -55,6 +60,7 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
               type="checkbox"
               value={cate.id}
               {...register('category')}
+              disabled={isSubmitting}
             />
             {cate.name}
           </label>

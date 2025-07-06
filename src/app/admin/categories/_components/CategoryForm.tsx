@@ -7,9 +7,10 @@ type CategoryFormProps = {
   handleSubmit: UseFormHandleSubmit<TAdminCategoriesSchema>
   onSubmit: (data: TAdminCategoriesSchema) => Promise<void>
   errors: FieldErrors<TAdminCategoriesSchema>
+  isSubmitting: boolean
 }
 
-export default function CategoryForm({register, handleSubmit, onSubmit, errors}:CategoryFormProps) {
+export default function CategoryForm({register, handleSubmit, onSubmit, errors, isSubmitting}:CategoryFormProps) {
   return (
     <form id='form' className={styles.form} action="" onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.formItem}>
@@ -18,6 +19,7 @@ export default function CategoryForm({register, handleSubmit, onSubmit, errors}:
           type="text"
           id='category'
           {...register('category')}
+          disabled={isSubmitting}
           />
         {errors.category && <div className={styles.error}>{errors.category.message as string}</div>}
       </div>
