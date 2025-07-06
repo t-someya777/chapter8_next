@@ -6,9 +6,10 @@ import Link from "next/link";
 import { formatDate, time } from "@/app/_functions/handleDate";
 import { PostWithCategory } from './_types';
 
+
 export default function Home() {
   const url = "/api/posts/";
-  const {data:posts, loading}:{data:PostWithCategory[] | null, loading:boolean}= useFetchData(url);
+  const {data:posts, loading}= useFetchData<PostWithCategory[]>(url);
 
 
   if(loading) return <div>読み込み中</div>

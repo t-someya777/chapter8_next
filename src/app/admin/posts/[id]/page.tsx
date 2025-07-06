@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import useFetchData from "@/app/_hooks/useFetchData"
 import PostForm from "../_components/PostForm"
 
-type DataProps = {
+type UpdatePostProps = {
   post: PostWithCategory
   category:Category[]
 }
@@ -23,7 +23,7 @@ export default function UpdatePost() {
   const router = useRouter()
 
   const url = `/api/admin/posts/${id}/`
-  const {data, loading} = useFetchData<DataProps>(url)
+  const {data, loading} = useFetchData<UpdatePostProps>(url)
   const {post , category} = data || {post: undefined, category: undefined}
 
     // バリデーション、データ制御

@@ -14,7 +14,7 @@ type AdminPostsProps = {
 export default function AdminPosts() {
 
   const url = '/api/admin/posts/'
-  const { data: posts, loading}: {data:AdminPostsProps[] | null, loading:boolean} = useFetchData(url)
+  const { data: posts, loading} = useFetchData<AdminPostsProps[]>(url)
 
   if(loading) return <div>読み込み中</div>
   if(posts === null || posts.length === 0) return (

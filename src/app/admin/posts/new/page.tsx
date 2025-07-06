@@ -13,7 +13,7 @@ export default function NewPost() {
   const router = useRouter()
 
   const url = `/api/admin/categories`
-  const {data: categories, loading}: {data: Category[] | null, loading:boolean} = useFetchData(url)
+  const {data: categories, loading} = useFetchData<Category[]>(url)
 
 
   const {
