@@ -6,22 +6,23 @@
 
 .flex {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-top: 20px;
 
   time {
-    font-size: 0.9rem;
     color: #ccc;
+    font-size: 0.9rem;
   }
 
   p {
     display: flex;
     gap: 10px;
+
     span {
       padding: 8px;
-      font-size: 0.9rem;
       color: #06c;
+      font-size: 0.9rem;
       border: 1px solid #06c;
     }
   }

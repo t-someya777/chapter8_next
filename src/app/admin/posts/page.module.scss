@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  a {
+    padding: 0.5rem;
+    color: #fff;
+    background-color: #39f;
+    border-radius: 0.2rem;
+  }
+}
+
+  .contentsWrapper {
+    padding-top: 2rem;
+  }
+  
+  .contents {
+    display: block;
+    padding: 1rem 0.5rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ccc;
+    transition: opacity .3s;
+  
+    &:hover {
+      opacity: 0.6;
+    }
+
+    time {
+      display: block;
+      color: #ccc;
+      font-weight: 400;
+    }
+  }  

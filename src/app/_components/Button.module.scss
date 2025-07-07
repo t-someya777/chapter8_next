@@ -1,0 +1,21 @@
+
+.button {
+  padding: 0.5em 1em;
+  color: #fff;
+  border: none;
+  border-radius: 0.2rem;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
+  &.create,
+  &.update {
+    background-color: #9ad;
+  }
+
+  &.delete {
+    background-color: #D22;
+  }
+}
