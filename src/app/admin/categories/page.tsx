@@ -11,7 +11,15 @@ export default function AdminCategories() {
   const { data: categories, loading } = useFetchData<Category[]>(url)
 
   if(loading) return <div>読み込み中</div>
-  if(categories === null || categories.length === 0) return <div>データがありません</div>
+  if(categories === null || categories.length === 0) return (
+    <>
+      <div className={styles.header}>
+        <h1>カテゴリー一覧</h1>
+        <Link href="/admin/categories/new">新規作成</Link>
+      </div>
+      <div>データがありません</div>
+    </>
+  )
 
   return (
     <>
