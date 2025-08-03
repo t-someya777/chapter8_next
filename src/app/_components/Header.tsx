@@ -1,14 +1,3 @@
-
-// export default function Header() {
-//   return (
-//     <header className={styles.header}>
-//       <Link className={styles.headerItem} href='/'>Blog</Link>
-//       <Link className={styles.headerItem} href='/contact'>お問い合わせ</Link>
-//     </header>
-//   )
-// }
-
-
 'use client'
 
 import Link from "next/link"

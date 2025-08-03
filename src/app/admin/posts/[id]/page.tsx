@@ -9,7 +9,7 @@ import { AdminPostsSchema, TAdminPostsSchema  } from "@/app/_schema/formSchema"
 import { PostWithCategory } from "@/app/_types"
 import { Category } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import PostForm from "../_components/PostForm"
 
 type UpdatePostProps = {
@@ -23,7 +23,7 @@ export default function UpdatePost() {
   const router = useRouter()
 
   const url = `/api/admin/posts/${id}/`
-  const {data, loading} = useFetchData<UpdatePostProps>(url)
+  const {data, loading} = useFetchDataAdmin<UpdatePostProps>(url)
   const {post , category} = data || {post: undefined, category: undefined}
 
     // バリデーション、データ制御

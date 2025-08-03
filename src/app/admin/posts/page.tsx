@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import styles from "./page.module.scss"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import { formatDate, time } from "@/app/_functions/handleDate"
 
 type AdminPostsProps = {
@@ -14,7 +14,7 @@ type AdminPostsProps = {
 export default function AdminPosts() {
 
   const url = '/api/admin/posts/'
-  const { data: posts, loading} = useFetchData<AdminPostsProps[]>(url)
+  const { data: posts, loading} = useFetchDataAdmin<AdminPostsProps[]>(url)
 
   if(loading) return <div>読み込み中</div>
   if(posts === null || posts.length === 0) return (

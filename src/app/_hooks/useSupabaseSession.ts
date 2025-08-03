@@ -10,6 +10,7 @@ export const useSupabaseSession = () => {
   useEffect(() => {
     const fetcher = async() => {
       const {data: {session}} = await supabase.auth.getSession()
+      
       setSession(session)
       setToken(session?.access_token || null)
       setIsLoading(false)

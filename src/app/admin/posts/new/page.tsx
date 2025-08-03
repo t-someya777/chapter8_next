@@ -6,14 +6,14 @@ import { AdminPostsSchema, TAdminPostsSchema } from "@/app/_schema/formSchema"
 import Button from "@/app/_components/Button"
 import { Category } from "@prisma/client"
 import { useRouter } from "next/navigation"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import PostForm from "../_components/PostForm"
 
 export default function NewPost() {
   const router = useRouter()
 
   const url = `/api/admin/categories`
-  const {data: categories, loading} = useFetchData<Category[]>(url)
+  const {data: categories, loading} = useFetchDataAdmin<Category[]>(url)
 
 
   const {

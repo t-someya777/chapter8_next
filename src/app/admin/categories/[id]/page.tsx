@@ -7,7 +7,7 @@ import styles from "./page.module.scss"
 import { useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Button from "@/app/_components/Button"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import { Category } from "@prisma/client"
 import CategoryForm from "../_components/CategoryForm"
 
@@ -17,7 +17,7 @@ export default function UpdateCategory() {
   const router = useRouter()
 
   const url = `/api/admin/categories/${id}/`
-  const {data, loading } = useFetchData<Category>(url)
+  const {data, loading } = useFetchDataAdmin<Category>(url)
 
   const {
     register,
