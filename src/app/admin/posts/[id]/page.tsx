@@ -11,6 +11,7 @@ import { Category } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import PostForm from "../_components/PostForm"
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession"
 
 type UpdatePostProps = {
   post: PostWithCategory
@@ -25,6 +26,7 @@ export default function UpdatePost() {
   const url = `/api/admin/posts/${id}/`
   const {data, loading} = useFetchDataAdmin<UpdatePostProps>(url)
   const {post , category} = data || {post: undefined, category: undefined}
+  const {token} = useSupabaseSession()
 
     // バリデーション、データ制御
     const {
@@ -61,7 +63,8 @@ export default function UpdatePost() {
       await fetch(`/api/admin/posts/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: token as string,
         },
         body: JSON.stringify(data)
       })
@@ -81,6 +84,9 @@ export default function UpdatePost() {
     try {
       const response = await fetch(`/api/admin/posts/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: token as string,
+        }
       })
 
       if(!response.ok) {
