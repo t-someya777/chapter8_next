@@ -1,5 +1,5 @@
 
-import { UseFormRegister, UseFormHandleSubmit, FieldErrors } from 'react-hook-form'
+import { UseFormRegister, UseFormHandleSubmit, FieldErrors, UseFormSetValue } from 'react-hook-form'
 import { TAdminPostsSchema } from '@/app/_schema/formSchema'
 import styles from './PostForm.module.scss'
 import { Category } from '@prisma/client'
@@ -11,16 +11,19 @@ import Image from 'next/image'
 type PostFormProps = {
   register: UseFormRegister<TAdminPostsSchema>
   handleSubmit: UseFormHandleSubmit<TAdminPostsSchema>
+  setValue: UseFormSetValue<TAdminPostsSchema>
   onSubmit:(data: TAdminPostsSchema) => Promise<void>
   errors: FieldErrors<TAdminPostsSchema>
   category: Category[] | null
   isSubmitting: boolean
+  thumbnailKey?: string
 }
 
-export default function PostForm({ register, handleSubmit, onSubmit, errors, category, isSubmitting}:PostFormProps){
+export default function PostForm({ register, handleSubmit, setValue, onSubmit, errors, category, isSubmitting, thumbnailKey}:PostFormProps){
 
-  const [thumbnailImageKey, setThumbnailImageKey] = useState('')
+  const [thumbnailImageKey, setThumbnailImageKey] = useState(thumbnailKey)
   const [thumbnailImageUrl, setThumbnailImageUrl] = useState('')
+
   
   const handleImageChange = async(event: ChangeEvent<HTMLInputElement>): Promise<void> => {
     const files = event.target.files
@@ -31,7 +34,8 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
     
     const file = files[0]
     const filePath = `private/${uuidv4()}`
-
+    // console.log(event.target.files)
+    
     // Supabaseに画像をアップロード
     const { data, error } = await supabase.storage
       .from('post_thumbnail') // ここでバケット名を指定
@@ -48,9 +52,15 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
 
     // data.pathに、画像固有のkeyが入っているので、thumbnailImageKeyに格納する
     setThumbnailImageKey(data.path)
+    // react-hook-formのフォーム値として画像のキーを設定
+    setValue('thumbnailImageKey', data.path , {
+      shouldValidate: true
+    })
   }
 
   useEffect(() => {
+    if(!thumbnailImageKey) return
+
     const fetcher = async () => {
       const {
         data: {publicUrl},
@@ -91,14 +101,20 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
         {errors.content && <div className={styles.error}>{errors.content.message}</div>}
     </div>
     <div className={styles.formItem}>
-      <label htmlFor="thumbnailImageKey">サムネイルURL</label>
+      <label htmlFor="thumbnailImage">サムネイル画像</label>
       <input 
         type="file" 
-        id="thumbnailImageKey"
+        id="thumbnailImage"
         onChange={handleImageChange}
-        // {...register('thumbnailUrl')}
         disabled={isSubmitting}
+        accept="image/*"
         />
+      {/* 実際にフォームで送信 */}
+      <input 
+        type="hidden"
+        id='thumbnailImageKey'
+        {...register('thumbnailImageKey')}
+      />
       {thumbnailImageUrl && (
         <div className="mt-2">
           <Image
@@ -106,10 +122,10 @@ export default function PostForm({ register, handleSubmit, onSubmit, errors, cat
             alt="thumbnail"
             width={400}
             height={400}
-          />
+            />
           </div>
         )}
-        {/* {errors.thumbnailUrl && <div className={styles.error}>{errors.thumbnailUrl.message}</div>} */}
+        {errors.thumbnailImageKey && <div className={styles.error}>{errors.thumbnailImageKey.message}</div>}
     </div>
     <div className={styles.formItem}>
       <p>カテゴリ</p>

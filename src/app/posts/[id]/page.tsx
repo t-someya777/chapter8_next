@@ -10,16 +10,17 @@ import { PostWithCategory } from '@/app/_types';
 export default function PostPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const url = `/api/posts/${id}`
-  const {data:post, loading} = useFetchData<PostWithCategory>(url);
+  const {data:post, loading, thumbnailUrl} = useFetchData<PostWithCategory>(url);
 
   if(loading) return <div>読み込み中</div>
   if(!post) return <div>データがありません</div>
+  if(!thumbnailUrl) return <div>画像がありません</div>
 
   return (
     <div className={styles.container}>
       <div>
         <Image 
-          src={post.thumbnailUrl}
+          src={thumbnailUrl}
           alt=""
           width={800}
           height={400}

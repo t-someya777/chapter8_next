@@ -26,7 +26,6 @@ export async function POST(request:NextRequest) {
   const token = request.headers.get('Authorization') ?? ''
   const { error } = await supabase.auth.getUser(token)
 
-  console.log('token', token, 'error', error)
 
   if(error) {
     return NextResponse.json({status: error.message}, {status: 400})
@@ -38,7 +37,7 @@ export async function POST(request:NextRequest) {
     data: {
       title:post.title,
       content:post.content,
-      thumbnailUrl:post.thumbnailUrl,
+      thumbnailImageKey:post.thumbnailImageKey,
       postCategories: {
         create: post.category.map((categoryId:string) => ({
           category: {

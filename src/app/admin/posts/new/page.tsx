@@ -21,13 +21,14 @@ export default function NewPost() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting}
   } = useForm<TAdminPostsSchema>({
     resolver: zodResolver(AdminPostsSchema),
     defaultValues: {
       title:'',
       content:'',
-      thumbnailUrl:'https://placehold.jp/800x400.png',
+      thumbnailImageKey:'',
       category:[]
     }
   })
@@ -68,6 +69,7 @@ export default function NewPost() {
       <PostForm
         register={register}
         handleSubmit={handleSubmit}
+        setValue={setValue}
         onSubmit={onSubmit}
         errors={errors}
         category={categories}

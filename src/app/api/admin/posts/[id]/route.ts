@@ -53,14 +53,14 @@ export async function PUT(request:NextRequest,{ params }: { params: { id: string
   const token = request.headers.get('Authorization') ?? ''
   const { error } = await supabase.auth.getUser(token)
 
-  console.log('token', token, 'error', error)
+
   if(error) {
     return NextResponse.json({status: error.message}, {status: 400})
   }
 
   const { id } = params
   const response = await request.json()
-  const { title, content, thumbnailUrl, category} = response
+  const { title, content, thumbnailImageKey, category} = response
 
   await prisma.post.update({
     where: {
@@ -69,7 +69,7 @@ export async function PUT(request:NextRequest,{ params }: { params: { id: string
     data: {
       title,
       content,
-      thumbnailUrl,
+      thumbnailImageKey,
       postCategories: {
         deleteMany: {}
       }

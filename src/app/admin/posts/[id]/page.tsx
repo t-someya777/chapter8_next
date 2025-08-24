@@ -32,6 +32,7 @@ export default function UpdatePost() {
     const {
       register,
       handleSubmit,
+      setValue,
       reset,
       formState:{ errors, isSubmitting }
     } = useForm<TAdminPostsSchema>({
@@ -39,7 +40,7 @@ export default function UpdatePost() {
       defaultValues: {
         title: '',
         content: '',
-        thumbnailUrl: '',
+        thumbnailImageKey: '',
         category: []
       }
     })
@@ -50,9 +51,10 @@ export default function UpdatePost() {
     reset({
       title:data.post.title,
       content: data.post.content,
-      thumbnailUrl: data.post.thumbnailUrl,
+      thumbnailImageKey: data.post.thumbnailImageKey,
       category: data.post.postCategories.map(pc => pc.category.id.toString())
     })
+
   },[data,reset])
 
   
@@ -114,9 +116,11 @@ export default function UpdatePost() {
         register={register}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
+        setValue={setValue}
         errors={errors}
         category={category}
         isSubmitting={isSubmitting}
+        thumbnailKey={data?.post.thumbnailImageKey}
       />
       <div className={styles.buttonWrapper}>
         <Button 
