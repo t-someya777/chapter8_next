@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useSupabaseSession } from "./useSupabaseSession";
-import { supabase } from "@/utils/supabase";
 
 
 export default function useFetchDataAdmin<T> (url:string) {
   const [data, setData] = useState<T | null>(null)
-  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const { token, isLoading } = useSupabaseSession()
 
@@ -34,14 +32,6 @@ export default function useFetchDataAdmin<T> (url:string) {
         setLoading(false)
         setData(result)
 
-        if(!result.post?.thumbnailImageKey) return
-
-          const thumbnail = supabase.storage
-          .from('post_thumbnail')
-          .getPublicUrl(result.post.thumbnailImageKey)
-
-        setThumbnailUrl(thumbnail.data.publicUrl)
-
       }catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -50,6 +40,6 @@ export default function useFetchDataAdmin<T> (url:string) {
     fetchData()
   }, [url, token])
 
-  return {data, loading, thumbnailUrl}
+  return {data, loading}
 
 }

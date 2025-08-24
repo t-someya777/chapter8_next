@@ -34,7 +34,6 @@ export default function PostForm({ register, handleSubmit, setValue, onSubmit, e
     
     const file = files[0]
     const filePath = `private/${uuidv4()}`
-    // console.log(event.target.files)
     
     // Supabaseに画像をアップロード
     const { data, error } = await supabase.storage
