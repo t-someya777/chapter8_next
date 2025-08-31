@@ -112,6 +112,7 @@ export default function PostForm({ register, handleSubmit, setValue, onSubmit, e
       <input 
         type="hidden"
         id='thumbnailImageKey'
+        disabled={isSubmitting}
         {...register('thumbnailImageKey')}
       />
       {thumbnailImageUrl && (
