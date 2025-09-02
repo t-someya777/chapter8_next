@@ -6,37 +6,41 @@ import { AdminPostsSchema, TAdminPostsSchema } from "@/app/_schema/formSchema"
 import Button from "@/app/_components/Button"
 import { Category } from "@prisma/client"
 import { useRouter } from "next/navigation"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import PostForm from "../_components/PostForm"
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession"
 
 export default function NewPost() {
   const router = useRouter()
 
   const url = `/api/admin/categories`
-  const {data: categories, loading} = useFetchData<Category[]>(url)
+  const {data: categories, loading} = useFetchDataAdmin<Category[]>(url)
+  const {token} = useSupabaseSession()
 
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting}
   } = useForm<TAdminPostsSchema>({
     resolver: zodResolver(AdminPostsSchema),
     defaultValues: {
       title:'',
       content:'',
-      thumbnailUrl:'https://placehold.jp/800x400.png',
+      thumbnailImageKey:'',
       category:[]
     }
   })
 
   const onSubmit = async (data: TAdminPostsSchema) => {
-    console.log(data)
+
     try {
       const response = await fetch('/api/admin/posts/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: token as string
         },
         body: JSON.stringify(data)
       })
@@ -65,6 +69,7 @@ export default function NewPost() {
       <PostForm
         register={register}
         handleSubmit={handleSubmit}
+        setValue={setValue}
         onSubmit={onSubmit}
         errors={errors}
         category={categories}

@@ -6,9 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCategoriesSchema, TAdminCategoriesSchema } from "@/app/_schema/formSchema"
 import { useRouter } from "next/navigation"
 import CategoryForm from "../_components/CategoryForm"
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession"
 
 export default function NewCategory() {
   const router = useRouter()
+  const {token} = useSupabaseSession()
 
   const {
     register,
@@ -24,6 +26,7 @@ export default function NewCategory() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: token as string,
         },
         body: JSON.stringify(data),
       })

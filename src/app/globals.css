@@ -40,3 +40,9 @@ a {
     color-scheme: dark;
   }
 }
+
+button {
+  appearance: none;
+  border: none;
+  background-color: transparent;
+}

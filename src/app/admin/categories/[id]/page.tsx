@@ -7,9 +7,10 @@ import styles from "./page.module.scss"
 import { useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Button from "@/app/_components/Button"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import { Category } from "@prisma/client"
 import CategoryForm from "../_components/CategoryForm"
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession"
 
 export default function UpdateCategory() {
   const params = useParams()
@@ -17,7 +18,8 @@ export default function UpdateCategory() {
   const router = useRouter()
 
   const url = `/api/admin/categories/${id}/`
-  const {data, loading } = useFetchData<Category>(url)
+  const {data, loading } = useFetchDataAdmin<Category>(url)
+  const {token} = useSupabaseSession()
 
   const {
     register,
@@ -45,6 +47,7 @@ export default function UpdateCategory() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: token as string,
         },
         body: JSON.stringify(data),
       })
@@ -68,6 +71,9 @@ export default function UpdateCategory() {
     try {
       const response = await fetch(`/api/admin/categories/${id}/`, {
         method: 'DELETE',
+        headers: {
+          Authorization: token as string,
+        }
       })
 
       if(!response.ok) {

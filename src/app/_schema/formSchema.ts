@@ -12,7 +12,7 @@ export type TFormSchema = z.infer<typeof FormSchema>;
 export const AdminPostsSchema = z.object({
   title: z.string().min(1, {message: 'タイトルは必須です。'}),
   content: z.string().min(1, {message: '内容は必須です。'}),
-  thumbnailUrl: z.string().url({message: 'URLを入力してください。'}),
+  thumbnailImageKey: z.string().min(1, {message: '画像を選択してください'}),
   category: z.array(z.string()).min(1, {message: 'カテゴリーを1つ以上選択してください。'}),
 })
 

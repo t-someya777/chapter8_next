@@ -5,21 +5,26 @@ import useFetchData from "@/app/_hooks/useFetchData";
 import Image from 'next/image';
 import { formatDate, time } from '@/app/_functions/handleDate';
 import { PostWithCategory } from '@/app/_types';
+import { useGetStorageData } from '@/app/_hooks/useGetSutorageData';
 
 
 export default function PostPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const url = `/api/posts/${id}`
-  const {data:post, loading} = useFetchData<PostWithCategory>(url);
 
+  const {data:post, loading} = useFetchData<PostWithCategory>(url);
+  const thumbnailKey = post?.thumbnailImageKey ?? ''
+  const thumbnailUrl = useGetStorageData(thumbnailKey)
+  
   if(loading) return <div>読み込み中</div>
   if(!post) return <div>データがありません</div>
+  if(!thumbnailUrl) return <div>画像がありません</div>
 
   return (
     <div className={styles.container}>
       <div>
         <Image 
-          src={post.thumbnailUrl}
+          src={thumbnailUrl}
           alt=""
           width={800}
           height={400}

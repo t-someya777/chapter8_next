@@ -9,8 +9,9 @@ import { AdminPostsSchema, TAdminPostsSchema  } from "@/app/_schema/formSchema"
 import { PostWithCategory } from "@/app/_types"
 import { Category } from "@prisma/client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import useFetchData from "@/app/_hooks/useFetchData"
+import useFetchDataAdmin from "@/app/_hooks/useFetchDataAdmin"
 import PostForm from "../_components/PostForm"
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession"
 
 type UpdatePostProps = {
   post: PostWithCategory
@@ -23,13 +24,15 @@ export default function UpdatePost() {
   const router = useRouter()
 
   const url = `/api/admin/posts/${id}/`
-  const {data, loading} = useFetchData<UpdatePostProps>(url)
+  const {data, loading} = useFetchDataAdmin<UpdatePostProps>(url)
   const {post , category} = data || {post: undefined, category: undefined}
+  const {token} = useSupabaseSession()
 
     // バリデーション、データ制御
     const {
       register,
       handleSubmit,
+      setValue,
       reset,
       formState:{ errors, isSubmitting }
     } = useForm<TAdminPostsSchema>({
@@ -37,7 +40,7 @@ export default function UpdatePost() {
       defaultValues: {
         title: '',
         content: '',
-        thumbnailUrl: '',
+        thumbnailImageKey: '',
         category: []
       }
     })
@@ -48,9 +51,10 @@ export default function UpdatePost() {
     reset({
       title:data.post.title,
       content: data.post.content,
-      thumbnailUrl: data.post.thumbnailUrl,
+      thumbnailImageKey: data.post.thumbnailImageKey,
       category: data.post.postCategories.map(pc => pc.category.id.toString())
     })
+
   },[data,reset])
 
   
@@ -61,7 +65,8 @@ export default function UpdatePost() {
       await fetch(`/api/admin/posts/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: token as string,
         },
         body: JSON.stringify(data)
       })
@@ -81,6 +86,9 @@ export default function UpdatePost() {
     try {
       const response = await fetch(`/api/admin/posts/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: token as string,
+        }
       })
 
       if(!response.ok) {
@@ -108,9 +116,11 @@ export default function UpdatePost() {
         register={register}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
+        setValue={setValue}
         errors={errors}
         category={category}
         isSubmitting={isSubmitting}
+        thumbnailKey={data?.post.thumbnailImageKey}
       />
       <div className={styles.buttonWrapper}>
         <Button 
